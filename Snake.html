@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2022.1">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="fr"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;Jeu de Snake&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>body {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>justify-content: center;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>height: 100vh;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin: 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #f0f0f0;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>canvas {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border: 2px solid #000;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #fff;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;canvas id="snakeGame" width="400" height="400"&gt;&lt;/canvas&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const canvas = document.getElementById('snakeGame');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const ctx = canvas.getContext('2d');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>let box = 20;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let snake = [{ x: 10 * box, y: 10 * box }];</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let direction = 'RIGHT';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let food = { x: Math.floor(Math.random() * 20) * box, y: Math.floor(Math.random() * 20) * box };</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let score = 0;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>document.addEventListener('keydown', changeDirection);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function changeDirection(event) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (event.keyCode === 37 &amp;&amp; direction !== 'RIGHT') {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>direction = 'LEFT';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else if (event.keyCode === 38 &amp;&amp; direction !== 'DOWN') {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>direction = 'UP';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else if (event.keyCode === 39 &amp;&amp; direction !== 'LEFT') {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>direction = 'RIGHT';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else if (event.keyCode === 40 &amp;&amp; direction !== 'UP') {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>direction = 'DOWN';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function collision(head, array) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>for (let i = 0; i &lt; array.length; i++) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (head.x === array[i].x &amp;&amp; head.y === array[i].y) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>return true;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>return false;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function draw() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>ctx.clearRect(0, 0, canvas.width, canvas.height);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>ctx.fillStyle = '#f0f0f0';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>ctx.fillRect(0, 0, canvas.width, canvas.height);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>for (let i = 0; i &lt; snake.length; i++) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>ctx.fillStyle = (i === 0) ? 'green' : 'lightgreen';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>ctx.fillRect(snake[i].x, snake[i].y, box, box);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>ctx.strokeStyle = 'darkgreen';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>ctx.strokeRect(snake[i].x, snake[i].y, box, box);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>ctx.fillStyle = 'red';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>ctx.fillRect(food.x, food.y, box, box);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>let snakeX = snake[0].x;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let snakeY = snake[0].y;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (direction === 'LEFT') snakeX -= box;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (direction === 'UP') snakeY -= box;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (direction === 'RIGHT') snakeX += box;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (direction === 'DOWN') snakeY += box;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (snakeX === food.x &amp;&amp; snakeY === food.y) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>score++;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>food = { x: Math.floor(Math.random() * 20) * box, y: Math.floor(Math.random() * 20) * box };</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>snake.pop();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>let newHead = { x: snakeX, y: snakeY };</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (snakeX &lt; 0 || snakeY &lt; 0 || snakeX &gt;= canvas.width || snakeY &gt;= canvas.height || collision(newHead, snake)) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>clearInterval(game);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>alert('Game Over! Votre score est : ' + score);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>snake.unshift(newHead);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>let game = setInterval(draw, 100);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
